@@ -12,6 +12,8 @@ class BatteryMonitorUI:
         self.engine = pyttsx3.init()
         self.engine.setProperty('rate', 170)
 
+
+
         # Create labels and entry fields
         low_label = tk.Label(master, text="Low Battery Level:")
         low_label.grid(row=0, column=0)
@@ -28,11 +30,13 @@ class BatteryMonitorUI:
         self.high_entry.grid(row=1, column=1)
 
         # Create save button
-        save_button = tk.Button(master, text="Save", command=self.start_monitoring)
+        save_button = tk.Button(master, text="Save", command=self.start_monitoring, font=("Helvetica", 10))
+        save_button.config(width=10, pady=5, padx=10)
         save_button.grid(row=2, column=0)
 
         # Create close button
-        close_button = tk.Button(master, text="Close", command=self.close_app)
+        close_button = tk.Button(master, text="Close", command=self.close_app, font=("Helvetica", 10))
+        close_button.config(width=10, pady=5, padx=10)
         close_button.grid(row=2, column=1)
 
     def validate_low_entry(self, value):
@@ -85,6 +89,17 @@ class BatteryMonitorUI:
 
 # Create the main window
 root = tk.Tk()
+
+# Get screen width and height
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+# Calculate x and y position to center the window
+x = int((screen_width / 2) - (315 / 2)) # 600 is the default width of the window
+y = int((screen_height / 2) - (90 / 2)) # 250 is the default height of the window
+
+# Set the window position
+root.geometry(f"315x90+{x}+{y}")
 
 # Create the battery monitor UI
 monitor_ui = BatteryMonitorUI(root)
