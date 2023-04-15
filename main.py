@@ -15,14 +15,14 @@ class BatteryMonitorUI:
 
 
         # Create labels and entry fields
-        low_label = tk.Label(master, text="Low Battery Level:")
+        low_label = tk.Label(master, text="Low Battery Level max 56%:")
         low_label.grid(row=0, column=0)
 
         vcmd = (master.register(self.validate_low_entry), '%P')
         self.low_entry = tk.Entry(master, validate="key", validatecommand=vcmd)
         self.low_entry.grid(row=0, column=1)
 
-        high_label = tk.Label(master, text="High Battery Level:")
+        high_label = tk.Label(master, text="High Battery Level max 99%:")
         high_label.grid(row=1, column=0)
 
         vcmd = (master.register(self.validate_high_entry), '%P')
@@ -40,13 +40,13 @@ class BatteryMonitorUI:
         close_button.grid(row=2, column=1)
 
     def validate_low_entry(self, value):
-        if value.isdigit() and len(value) <= 2 and int(value) >= 1 or value == "":
+        if value.isdigit() and len(value) <= 2 and int(value) <= 56 or value == "":
             return True
         else:
             return False
 
     def validate_high_entry(self, value):
-        if value.isdigit() and len(value) <= 3 and int(value) >= 1 or value == "":
+        if value.isdigit() and len(value) <= 3 and int(value) <= 99 or value == "":
             return True
         else:
             return False
@@ -95,11 +95,11 @@ screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
 # Calculate x and y position to center the window
-x = int((screen_width / 2) - (315 / 2)) # 600 is the default width of the window
+x = int((screen_width / 2) - (375 / 2)) # 600 is the default width of the window
 y = int((screen_height / 2) - (90 / 2)) # 250 is the default height of the window
 
 # Set the window position
-root.geometry(f"315x90+{x}+{y}")
+root.geometry(f"375x90+{x}+{y}")
 
 # Create the battery monitor UI
 monitor_ui = BatteryMonitorUI(root)
