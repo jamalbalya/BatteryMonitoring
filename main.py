@@ -1,18 +1,43 @@
-import tkinter as tk
-import subprocess
-import pyttsx3
+# """
+# ------------------------------------------------------------------------
+# Copyright (c) 2023, Jamal Balya
+# All rights reserved.
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+# * Redistributions of source code must retain the above copyright notice,
+#   this list of conditions and the following disclaimer.
+# * Redistributions in binary form must reproduce the above copyright
+#   notice, this list of conditions and the following disclaimer in the
+#   documentation and/or other materials provided with the distribution.
+# * Neither the name Jamal Balya nor the names of its contributors may be
+#   used to endorse or promote products derived from this software without
+#   specific prior written permission.
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+# IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+# TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+# PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+# OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# """
 
+import tkinter as tk
+import pyttsx3
+import psutil
 
 class BatteryMonitorUI:
     def __init__(self, master):
         self.master = master
-        master.title("Battery Monitoring Jemz Be v1.1.0")
+        master.title("Battery Monitoring JamalBalya v1.1.1")
 
         # Initialize text-to-speech engine
         self.engine = pyttsx3.init()
         self.engine.setProperty('rate', 170)
-
-
 
         # Create labels and entry fields
         low_label = tk.Label(master, text="Low Battery Level max 56%:")
@@ -40,13 +65,13 @@ class BatteryMonitorUI:
         close_button.grid(row=2, column=1)
 
     def validate_low_entry(self, value):
-        if value.isdigit() and len(value) <= 2 and int(value) <= 56 or value == "":
+        if value.isdigit() and len(value) <= 2 and int(value) <= 69 or value == "":
             return True
         else:
             return False
 
     def validate_high_entry(self, value):
-        if value.isdigit() and len(value) <= 3 and int(value) <= 99 or value == "":
+        if value.isdigit() and len(value) <= 2 and int(value) <= 99 or value == "":
             return True
         else:
             return False
@@ -62,9 +87,8 @@ class BatteryMonitorUI:
         # Define the function to monitor the battery level and pop-up messages
         def monitor_battery_level():
             try:
-                battery_info = subprocess.check_output(['pmset', '-g', 'batt']).decode("utf-8").strip()
-                battery_level = int(battery_info.split()[5].replace('%;', ''))
-            except (ValueError, subprocess.CalledProcessError):
+                battery_level = psutil.sensors_battery().percent
+            except:
                 # Handle errors gracefully
                 self.engine.say("Failed to retrieve battery level")
                 self.engine.runAndWait()
@@ -74,21 +98,26 @@ class BatteryMonitorUI:
                 # Show low battery message
                 self.engine.say(f"The battery level is at {battery_level}%. Please connect the charger.")
                 self.engine.runAndWait()
+                self.master.deiconify()
             elif battery_level >= high_battery_level:
                 # Show high battery message
                 self.engine.say(f"The battery level is at {battery_level}%. Please unplug the charger.")
                 self.engine.runAndWait()
+                self.master.deiconify()
 
             # Wait for 1 minute before checking again
             self.master.after(60000, monitor_battery_level)
+
+        # Start monitoring
+        monitor_battery_level()
 
     def close_app(self):
         self.master.deiconify()
         self.master.destroy()
 
-
-# Create the main window
-root = tk.Tk()
+if __name__ == "__main__":
+    # Create the main window
+    root = tk.Tk()
 
 # Get screen width and height
 screen_width = root.winfo_screenwidth()

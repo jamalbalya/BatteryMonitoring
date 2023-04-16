@@ -1,0 +1,5 @@
+    Python 3.x installed
+    The following packages installed:
+        tkinter
+        pyttsx3
+        psutil
