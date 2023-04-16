@@ -65,7 +65,7 @@ class BatteryMonitorUI:
         close_button.grid(row=2, column=1)
 
     def validate_low_entry(self, value):
-        if value.isdigit() and len(value) <= 2 and int(value) <= 69 or value == "":
+        if value.isdigit() and len(value) <= 2 and int(value) <= 56 or value == "":
             return True
         else:
             return False
