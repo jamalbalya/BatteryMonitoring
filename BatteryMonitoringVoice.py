@@ -33,7 +33,10 @@ import psutil
 class BatteryMonitorUI:
     def __init__(self, master):
         self.master = master
-        master.title("Battery Monitoring JamalBalya v1.1.1")
+        master.title("Battery Monitoring Voice (c) Jamal Balya v1.1.2")
+
+        # Load logo image
+        self.logo_image = tk.PhotoImage(file="logo.png")
 
         # Initialize text-to-speech engine
         self.engine = pyttsx3.init()
